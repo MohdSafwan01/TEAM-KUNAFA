@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Data (too large for GitHub)
+Dataset/
+TestImages/
+*.zip
+
+# Model weights (too large — use Git LFS or share separately)
+bundle/enhanced_model_best.pth
+bundle/test_predictions/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Virtual environments
+venv/
+.env/

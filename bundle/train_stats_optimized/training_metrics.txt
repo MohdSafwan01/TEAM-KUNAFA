@@ -1,0 +1,8 @@
+==================================================
+TRAINING METRICS SUMMARY
+==================================================
+
+  Best Val IoU:      0.4831 (Epoch 9)
+  Best Val Dice:     0.6112 (Epoch 9)
+  Best Val Accuracy: 0.8241 (Epoch 10)
+  Lowest Val Loss:   0.5180 (Epoch 10)

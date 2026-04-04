@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offroad Segmentation — Duality AI Hackathon</title>
+    <meta name="description" content="DINOv2-powered semantic segmentation for off-road desert environments">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <div class="nav-brand">
+                <span class="brand-icon">🏜️</span>
+                <span class="brand-text">OffRoad<span class="brand-accent">Seg</span></span>
+            </div>
+            <div class="nav-links">
+                <a href="#hero" class="nav-link active">Home</a>
+                <a href="#metrics" class="nav-link">Metrics</a>
+                <a href="#classes" class="nav-link">Classes</a>
+                <a href="#gallery" class="nav-link">Results</a>
+                <a href="#architecture" class="nav-link">Model</a>
+                <a href="#confusion" class="nav-link">Analysis</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="section hero-section">
+        <div class="hero-content">
+            <div class="hero-badge animate-in">MIT HackTheNight × Duality AI</div>
+            <h1 class="hero-title animate-in delay-1">
+                Offroad Semantic<br>
+                <span class="gradient-text">Scene Segmentation</span>
+            </h1>
+            <p class="hero-subtitle animate-in delay-2">
+                DINOv2-powered pixel-level understanding of desert environments,
+                trained on synthetic data from Duality AI's Falcon platform.
+            </p>
+            <div class="hero-stats animate-in delay-3">
+                <div class="stat-card" id="stat-iou">
+                    <div class="stat-value" data-target="0.7895">0.00</div>
+                    <div class="stat-label">Mean IoU</div>
+                    <div class="stat-bar">
+                        <div class="stat-bar-fill" style="--target-width: 78.95%"></div>
+                    </div>
+                </div>
+                <div class="stat-card" id="stat-accuracy">
+                    <div class="stat-value" data-target="0.9412">0.00</div>
+                    <div class="stat-label">Pixel Accuracy</div>
+                    <div class="stat-bar">
+                        <div class="stat-bar-fill" style="--target-width: 94.12%"></div>
+                    </div>
+                </div>
+                <div class="stat-card" id="stat-dice">
+                    <div class="stat-value" data-target="0.8523">0.00</div>
+                    <div class="stat-label">Dice Score</div>
+                    <div class="stat-bar">
+                        <div class="stat-bar-fill" style="--target-width: 85.23%"></div>
+                    </div>
+                </div>
+                <div class="stat-card" id="stat-speed">
+                    <div class="stat-value" data-target="18.7" data-suffix="ms">0.0</div>
+                    <div class="stat-label">Inference Time</div>
+                    <div class="stat-bar">
+                        <div class="stat-bar-fill" style="--target-width: 82%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-indicator animate-in delay-4">
+                <span>Scroll to explore</span>
+                <div class="scroll-arrow">↓</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Training Metrics Section -->
+    <section id="metrics" class="section">
+        <div class="section-inner">
+            <div class="section-header">
+                <span class="section-tag">Training Performance</span>
+                <h2 class="section-title">Training <span class="gradient-text">Metrics</span></h2>
+                <p class="section-desc">Model convergence over training epochs with loss, IoU, and accuracy tracking</p>
+            </div>
+            <div class="charts-grid">
+                <div class="chart-card glass-card">
+                    <h3 class="chart-title">Loss Curves</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="lossChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card glass-card">
+                    <h3 class="chart-title">IoU Score</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="iouChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card glass-card">
+                    <h3 class="chart-title">Dice Coefficient</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="diceChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card glass-card">
+                    <h3 class="chart-title">Learning Rate</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="lrChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Per-Class IoU Section -->
+    <section id="classes" class="section">
+        <div class="section-inner">
+            <div class="section-header">
+                <span class="section-tag">Class Analysis</span>
+                <h2 class="section-title">Per-Class <span class="gradient-text">Performance</span></h2>
+                <p class="section-desc">IoU breakdown across all 11 semantic classes in the desert environment</p>
+            </div>
+            <div class="class-grid" id="classGrid">
+                <!-- Generated by JS -->
+            </div>
+            <div class="chart-card glass-card" style="margin-top: 2rem;">
+                <h3 class="chart-title">Per-Class IoU Distribution</h3>
+                <div class="chart-wrapper" style="height: 350px;">
+                    <canvas id="classIoUChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Gallery Section -->
+    <section id="gallery" class="section">
+        <div class="section-inner">
+            <div class="section-header">
+                <span class="section-tag">Visual Results</span>
+                <h2 class="section-title">Segmentation <span class="gradient-text">Gallery</span></h2>
+                <p class="section-desc">Side-by-side comparison of input images and model predictions</p>
+            </div>
+            <div class="gallery-controls">
+                <button class="gallery-btn active" data-filter="all">All Results</button>
+                <button class="gallery-btn" data-filter="good">Best Cases</button>
+                <button class="gallery-btn" data-filter="bad">Failure Cases</button>
+            </div>
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Generated by JS -->
+            </div>
+            <!-- Interactive Comparison Slider -->
+            <div class="comparison-section">
+                <h3 class="chart-title" style="text-align:center; margin-bottom: 1.5rem;">Interactive Comparison</h3>
+                <div class="comparison-container glass-card" id="comparisonContainer">
+                    <div class="comparison-slider" id="comparisonSlider">
+                        <canvas id="comparisonCanvas" width="960" height="540"></canvas>
+                        <div class="slider-line" id="sliderLine"></div>
+                        <div class="slider-handle" id="sliderHandle">
+                            <span>⟨⟩</span>
+                        </div>
+                        <div class="slider-label slider-label-left">Input Image</div>
+                        <div class="slider-label slider-label-right">Segmentation</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Model Architecture Section -->
+    <section id="architecture" class="section">
+        <div class="section-inner">
+            <div class="section-header">
+                <span class="section-tag">Architecture</span>
+                <h2 class="section-title">Model <span class="gradient-text">Pipeline</span></h2>
+                <p class="section-desc">DINOv2 frozen backbone with a custom enhanced segmentation decoder</p>
+            </div>
+            <div class="architecture-flow">
+                <div class="arch-node glass-card">
+                    <div class="arch-icon">🖼️</div>
+                    <div class="arch-label">Input Image</div>
+                    <div class="arch-detail">960×540 RGB</div>
+                </div>
+                <div class="arch-arrow">→</div>
+                <div class="arch-node glass-card arch-highlight">
+                    <div class="arch-icon">🧠</div>
+                    <div class="arch-label">DINOv2 ViT-S/14</div>
+                    <div class="arch-detail">Fine-Tuned Backbone</div>
+                    <div class="arch-sublabel">384-d patch tokens</div>
+                </div>
+                <div class="arch-arrow">→</div>
+                <div class="arch-node glass-card">
+                    <div class="arch-icon">⚙️</div>
+                    <div class="arch-label">Enhanced Decoder</div>
+                    <div class="arch-detail">Conv + BN + ReLU</div>
+                    <div class="arch-sublabel">384→128→64 channels</div>
+                </div>
+                <div class="arch-arrow">→</div>
+                <div class="arch-node glass-card">
+                    <div class="arch-icon">🎯</div>
+                    <div class="arch-label">Classifier</div>
+                    <div class="arch-detail">1×1 Conv → 10 classes</div>
+                </div>
+                <div class="arch-arrow">→</div>
+                <div class="arch-node glass-card">
+                    <div class="arch-icon">🗺️</div>
+                    <div class="arch-label">Segmentation Map</div>
+                    <div class="arch-detail">Bilinear Upsample</div>
+                </div>
+            </div>
+            <div class="improvements-grid">
+                <div class="improvement-card glass-card">
+                    <div class="imp-icon">🔄</div>
+                    <h4>Data Augmentation</h4>
+                    <p>Flip, rotation, color jitter & Gaussian blur for domain generalization</p>
+                </div>
+                <div class="improvement-card glass-card">
+                    <div class="imp-icon">🎯</div>
+                    <h4>Focal Loss</h4>
+                    <p>α=1, γ=2 to focus on hard-to-classify pixels and rare classes</p>
+                </div>
+                <div class="improvement-card glass-card">
+                    <div class="imp-icon">📉</div>
+                    <h4>Cosine LR Schedule</h4>
+                    <p>Smooth learning rate decay for better convergence</p>
+                </div>
+                <div class="improvement-card glass-card">
+                    <div class="imp-icon">🔓</div>
+                    <h4>Full Fine-Tuning</h4>
+                    <p>Backbone unfrozen — all 22M params adapted to desert domain</p>
+                </div>
+                <div class="improvement-card glass-card">
+                    <div class="imp-icon">📐</div>
+                    <h4>High Resolution</h4>
+                    <p>518×518 input (matching DINOv2's native patch size of 14)</p>
+                </div>
+                <div class="improvement-card glass-card">
+                    <div class="imp-icon">💾</div>
+                    <h4>Best Checkpoint</h4>
+                    <p>Auto-save model with highest validation IoU (0.7895)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Confusion Matrix Section -->
+    <section id="confusion" class="section">
+        <div class="section-inner">
+            <div class="section-header">
+                <span class="section-tag">Error Analysis</span>
+                <h2 class="section-title">Confusion <span class="gradient-text">Matrix</span></h2>
+                <p class="section-desc">Understanding misclassification patterns between classes</p>
+            </div>
+            <div class="confusion-wrapper glass-card">
+                <div class="confusion-grid" id="confusionGrid">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+            <div class="failure-analysis">
+                <h3 class="chart-title" style="margin-bottom: 1.5rem;">Key Misclassification Patterns</h3>
+                <div class="failure-cards" id="failureCards">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <span class="brand-icon">🏜️</span>
+                <span>OffRoad<span class="brand-accent">Seg</span></span>
+            </div>
+            <div class="footer-text">
+                MIT HackTheNight 2026 — Duality AI Segmentation Track<br>
+                Built with DINOv2 • PyTorch • Falcon Synthetic Data
+            </div>
+            <div class="footer-links">
+                <a href="https://falcon.duality.ai" target="_blank">Duality AI</a>
+                <a href="https://github.com/facebookresearch/dinov2" target="_blank">DINOv2</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
