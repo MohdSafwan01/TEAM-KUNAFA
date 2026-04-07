@@ -2,7 +2,7 @@
 
 # 🏜️ TEAM KUNAFA — Offroad Semantic Scene Segmentation
 
-### MIT HackTheNight 2026 × Duality AI
+### YOLO HACKATHON 2026 × Duality AI
 
 [![IoU](https://img.shields.io/badge/Mean%20IoU-0.7895-brightgreen?style=for-the-badge&logo=pytorch)](https://github.com/MohdSafwan01/TEAM-KUNAFA)
 [![Accuracy](https://img.shields.io/badge/Pixel%20Accuracy-94.12%25-blue?style=for-the-badge)](https://github.com/MohdSafwan01/TEAM-KUNAFA)
